@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "985861252282",
+    "firebase_url": "https://test-firebase-da623.firebaseio.com",
+    "project_id": "test-firebase-da623",
+    "storage_bucket": "test-firebase-da623.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985861252282:android:2ed97fa8af355cb8c0ce83",
+        "android_client_info": {
+          "package_name": "com.example.isp_bill_collection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985861252282-78hl3fcuiuc38ukdk0fckhvu8od2kn21.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3TlAv6XVzYy19O9qRwfTM6907mbDSRvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985861252282-78hl3fcuiuc38ukdk0fckhvu8od2kn21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985861252282:android:383afa38dca7998d",
+        "android_client_info": {
+          "package_name": "com.morshed.firebasetestapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985861252282-78hl3fcuiuc38ukdk0fckhvu8od2kn21.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3TlAv6XVzYy19O9qRwfTM6907mbDSRvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985861252282-78hl3fcuiuc38ukdk0fckhvu8od2kn21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
