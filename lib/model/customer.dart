@@ -1,4 +1,4 @@
-class Customer {
+class CustomerModel {
   String? id;
   String name;
   String village;
@@ -7,7 +7,7 @@ class Customer {
   String? image;
   String package;
 
-  Customer(
+  CustomerModel(
       {this.id,
       required this.name,
       required this.village,
@@ -15,4 +15,29 @@ class Customer {
       required this.bill,
       this.image,
       required this.package});
+
+  Map<String,dynamic> toMap () {
+    var map = <String,dynamic>{
+      'id' : id,
+      'name' : name,
+      'village' : village,
+      'phone' : phone,
+      'bill' : bill,
+      'image' : image,
+      'package' : package,
+    };
+    return map;
+  }
+
+
+  factory CustomerModel.fromMap(Map<String,dynamic> map) => CustomerModel(
+      id: map['id'],
+      name: map['name'],
+      village: map['village'],
+      phone: map['phone'],
+      bill: map['bill'],
+      image: map['image'],
+      package: map['package']);
+
+
 }

@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:isp_bill_collection/model/customer.dart';
 
 const _packageDropdownList = [
-  '1Mbps',
-  '2Mbps',
-  '3Mbps',
-  '4Mbps',
-  '5Mbps',
-  'Hotpost'
+  '১ Mbps',
+  '২ Mbps',
+  '৩ Mbps',
+  '৪ Mbps',
+  '৫ Mbps',
+  'হটস্পট'
 ];
 const _villageDropdownList = [
-  'Jhalkhur',
-  'BombuPara',
-  'SatiyanPara',
-  'VitaPara',
-  'Apsun',
-  'Saduria',
-  'Bolorampur',
-  'Kichok'
+  'ঝালখুর',
+  'বম্বুপাড়া',
+  'ছাতিয়ানপাড়া',
+  'ভিটাপাড়া ',
+  'আপসুন ',
+  'সাদুরিয়া',
+  'বলরাম্পুর',
+  'কিচক'
 ];
 
 class AddCustomer extends StatefulWidget {
@@ -36,6 +38,7 @@ class _AddCustomerState extends State<AddCustomer> {
 
   String? package;
   String? village;
+  DateTime? dateTime;
 
   @override
   void dispose() {
@@ -68,7 +71,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Customer Name',
+                      hintText: 'কাস্টমারের নাম',
                       prefixIcon: Icon(Icons.verified_user),
                     ),
                     validator: (value) {
@@ -86,7 +89,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Billing Amount',
+                      hintText: 'মাসিক বিল',
                       prefixIcon: Icon(Icons.balance),
                     ),
                     validator: (value) {
@@ -104,7 +107,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Phone Number',
+                      hintText: 'মোবাইল নং',
                       prefixIcon: Icon(Icons.phone),
                     ),
                     validator: (value) {
@@ -125,12 +128,11 @@ class _AddCustomerState extends State<AddCustomer> {
                     child: Container(
                       padding: const EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(1.0),
-
                       ),
                       child: DropdownButtonFormField<String>(
-                        hint: Text('Select Village'),
+                        hint: Text('গ্রাম সিলেক্ট করুন'),
                         value: village,
                         onChanged: (value) {
                           village = value;
@@ -141,15 +143,132 @@ class _AddCustomerState extends State<AddCustomer> {
                                   value: e,
                                 ))
                             .toList(),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Error....';
+                            }
+                            return null;
+                          },
                       ),
                     ),
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: Card(
+                    elevation: 4,
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(1.0),
+                      ),
+                      child: DropdownButtonFormField<String>(
+                        hint: Text('প্যাকেজ সিলেক্ট করুন'),
+
+                        value: package,
+                        onChanged: (value) {
+                          package = value;
+                        },
+                        items: _packageDropdownList
+                            .map((e) => DropdownMenuItem(
+                                  child: (Text(e)),
+                                  value: e,
+                                ))
+                            .toList(),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Error....';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: Card(
+                    elevation: 4,
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(1.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            child: Text('এখানে ক্লিক করুন'),
+                            onPressed: _showDatePickerDialog,
+                          ),
+                          
+                          Text(dateTime == null ? 'তারিখ পাওয়া যায়নি!' : DateFormat('dd/mm/yyyy').format(dateTime!) )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child:  InkWell(
+                    child: Center(
+                      child: ElevatedButton(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Save Data',style: TextStyle(fontSize: 17,),),
+                            ),
+                            onPressed: _savaDateToFirebasedb(),
+                          ),
+                        ),
+                  ),
+                  ),
+
+
+
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  _showDatePickerDialog() async{
+
+    final _selectedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year-1),
+        lastDate: DateTime.now()
+    );
+
+    if(_selectedDate != null){
+      setState((){
+        dateTime = _selectedDate;
+      });
+    }
+
+  }
+
+  _savaDateToFirebasedb() {
+
+    // if(_formKey.currentState!.validate()){
+    //   final customerModel = CustomerModel(
+    //       name: _nameController.text,
+    //       village: village!,
+    //       bill: num.parse(_billController.text),
+    //       package: package!
+    //
+    //   );
+
+    // }
+
   }
 }

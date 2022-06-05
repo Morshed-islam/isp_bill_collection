@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:isp_bill_collection/auth/auth_serrvice.dart';
 import 'package:isp_bill_collection/pages/all_customer.dart';
 import 'package:isp_bill_collection/pages/login_page.dart';
@@ -67,8 +68,8 @@ class _HomePageState extends State<HomePage> {
                         Lottie.asset('images/add_customer1.json',
                             width: 100, height: 100, fit: BoxFit.fill),
                         Text(
-                          'Add Customer',
-                          style: TextStyle(fontSize: 17.0),
+                          'নতুন কাস্টমার ',
+                          style: GoogleFonts.acme(textStyle: TextStyle(fontSize: 17)),
                         )
                       ],
                     ),
@@ -95,8 +96,8 @@ class _HomePageState extends State<HomePage> {
                         Lottie.asset('images/view_user.json',
                             width: 100, height: 100, fit: BoxFit.fill),
                         Text(
-                          'All Customer',
-                          style: TextStyle(fontSize: 17.0),
+                          'কাস্টমার লিস্ট',
+                          style: GoogleFonts.acme(textStyle: TextStyle(fontSize: 17)),
                         )
                       ],
                     ),
@@ -117,8 +118,8 @@ class _HomePageState extends State<HomePage> {
                       Lottie.asset('images/billing.json',
                           width: 100, height: 100, fit: BoxFit.fill),
                       Text(
-                        'Billing',
-                        style: TextStyle(fontSize: 17.0),
+                        'বিল কালেকশন',
+                        style: GoogleFonts.acme(textStyle: TextStyle(fontSize: 17)),
                       )
                     ],
                   ),
@@ -138,8 +139,8 @@ class _HomePageState extends State<HomePage> {
                       Lottie.asset('images/dues2.json',
                           width: 100, height: 100, fit: BoxFit.fill),
                       Text(
-                        'Dues',
-                        style: TextStyle(fontSize: 17.0),
+                        'বকেয়া',
+                        style: GoogleFonts.acme(textStyle: TextStyle(fontSize: 17)),
                       )
                     ],
                   ),
@@ -159,8 +160,8 @@ class _HomePageState extends State<HomePage> {
                       Lottie.asset('images/report.json',
                           width: 100, height: 100, fit: BoxFit.fill),
                       Text(
-                        'Reports',
-                        style: TextStyle(fontSize: 17.0),
+                        'রিপোর্স্ট',
+                        style: GoogleFonts.acme(textStyle: TextStyle(fontSize: 17)),
                       )
                     ],
                   ),
@@ -180,8 +181,8 @@ class _HomePageState extends State<HomePage> {
                       Lottie.asset('images/expense.json',
                           width: 100, height: 100, fit: BoxFit.fill),
                       Text(
-                        'Expense',
-                        style: TextStyle(fontSize: 17.0),
+                        'খরচ',
+                        style: GoogleFonts.acme(textStyle: TextStyle(fontSize: 17)),
                       )
                     ],
                   ),
