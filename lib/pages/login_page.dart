@@ -68,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: const InputDecoration(
                           hintText: 'Password',
                           prefixIcon: Icon(Icons.password),
-
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -100,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
   void _loginAdmin() async {
     if (_formkey.currentState!.validate()) {
       try {
-        final uid =await AuthService.loginAdmin(
+        final uid = await AuthService.loginAdmin(
             _emailController.text, _PasswordController.text);
 
         if (uid != null) {
