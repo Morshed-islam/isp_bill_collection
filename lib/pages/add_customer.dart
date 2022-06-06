@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:isp_bill_collection/model/customer.dart';
+import 'package:isp_bill_collection/db/db_helper.dart';
+import 'package:isp_bill_collection/model/customer_model.dart';
+import 'package:isp_bill_collection/model/due_model.dart';
+import 'package:isp_bill_collection/pages/home_page.dart';
+import 'package:isp_bill_collection/utils/constants.dart';
 
 const _packageDropdownList = [
   '১ Mbps',
@@ -52,7 +57,7 @@ class _AddCustomerState extends State<AddCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Customer'),
+        title: Text('নতুন কাস্টমার'),
       ),
       body: ListView(
         children: [
@@ -199,6 +204,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         borderRadius: BorderRadius.circular(1.0),
                       ),
                       child: Row(
+                        key: _formKey,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           TextButton(
@@ -206,7 +212,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             onPressed: _showDatePickerDialog,
                           ),
                           
-                          Text(dateTime == null ? 'তারিখ পাওয়া যায়নি!' : DateFormat('dd/mm/yyyy').format(dateTime!) )
+                          Text(dateTime == null ? 'তারিখ পাওয়া যায়নি!' : DateFormat('dd/MM/yyyy').format(dateTime!) )
                         ],
                       ),
                     ),
@@ -215,26 +221,26 @@ class _AddCustomerState extends State<AddCustomer> {
 
                 SizedBox(height: 20,),
 
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child:  InkWell(
-                    child: Center(
-                      child: ElevatedButton(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Save Data',style: TextStyle(fontSize: 17,),),
-                            ),
-                            onPressed: _savaDateToFirebasedb(),
-                          ),
-                        ),
-                  ),
-                  ),
-
-
 
               ],
             ),
-          )
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child:  InkWell(
+              child: Center(
+                child: ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('সেভ করুন',style: TextStyle(fontSize: 17,),),
+                  ),
+                  onPressed: _savaDateToFirebasedb,
+                ),
+              ),
+            ),
+          ),
+
         ],
       ),
     );
@@ -259,16 +265,31 @@ class _AddCustomerState extends State<AddCustomer> {
 
   _savaDateToFirebasedb() {
 
-    // if(_formKey.currentState!.validate()){
-    //   final customerModel = CustomerModel(
-    //       name: _nameController.text,
-    //       village: village!,
-    //       bill: num.parse(_billController.text),
-    //       package: package!
-    //
-    //   );
+    if(_formKey.currentState!.validate()){
 
-    // }
+      final _customerModel = CustomerModel1(
+          name: _nameController.text,
+          village: village!,
+          phone: _phoneController.text,
+          bill: num.parse(_billController.text),
+          package: package!,
+          creation_date: Timestamp.fromDate(dateTime!)
+      );
+
+      final dueModel = DueModel();
+      
+      DBHelper.addNewCustomer(_customerModel, dueModel).then((value){
+        showMsg(context, 'নতুন কাস্টমার যোগ হয়েছে!');
+        Navigator.pushReplacementNamed(context, HomePage.routeName);
+
+
+      }).catchError((error){
+        showMsg(context, error.toString());
+
+      });
+      
+
+    }
 
   }
 }
