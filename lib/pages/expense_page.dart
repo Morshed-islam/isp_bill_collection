@@ -3,16 +3,27 @@ import 'package:isp_bill_collection/pages/add_customer.dart';
 import 'package:isp_bill_collection/pages/all_customer.dart';
 import 'package:isp_bill_collection/pages/tab_page/expense_entry.dart';
 import 'package:isp_bill_collection/pages/tab_page/expense_list.dart';
+import 'package:isp_bill_collection/providers/expense_provider.dart';
+import 'package:provider/provider.dart';
 
 class ExpensePage extends StatefulWidget {
 
   static const routeName = '/expense_page';
+
 
   @override
   State<ExpensePage> createState() => _ExpensePageState();
 }
 
 class _ExpensePageState extends State<ExpensePage> {
+
+
+  @override
+  void didChangeDependencies(){
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
@@ -40,20 +51,3 @@ class _ExpensePageState extends State<ExpensePage> {
   }
 }
 
-//       Scaffold(
-//       appBar: AppBar(
-//         title: Text('খরচের তালিকা'),
-//       ),
-//
-//       body: DefaultTabController(
-//         length: 2,
-//         child: TabBar(tabs: [
-//           Tab(icon: Icon(Icons.add),text: 'Tab 1',),
-//           Tab(icon: Icon(Icons.add),text: 'Tab 2',),
-//
-//         ]),
-//       ),
-//     );
-//
-//   }
-// }

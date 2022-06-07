@@ -43,16 +43,24 @@ class DBHelper {
   }
 
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllCustomers()=>
-      _db.collection(collectionCustomer).snapshots();
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllCustomers(){
+    return _db.collection(collectionCustomer).snapshots();
+  }
 
 
   //TODO to be continued
    static Stream<QuerySnapshot<Map<String, dynamic>>> fetchTotalDueByUserID(String userId)=>
        _db.collection(collectionDue).where('customer_id', isEqualTo: userId).snapshots();
 
-   
 
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchExpenseByMonth() {
+    var date =  DateTime.now();
+     return _db.collection(collectionExpense)
+        .where('year', isGreaterThanOrEqualTo: 2022)
+        .orderBy('year', descending: true)
+        .snapshots();
+     //DateTime(date.year, 1)
+  }
 
 
 }

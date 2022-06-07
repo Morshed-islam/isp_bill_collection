@@ -9,6 +9,8 @@ import 'package:lottie/lottie.dart';
 import 'package:isp_bill_collection/pages/add_customer.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/expense_provider.dart';
+
 class HomePage extends StatefulWidget {
   static const String routeName = '/home';
 
@@ -19,6 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   late CustomerProvider _customerProvider;
+  late ExpenseProvider _expenseProvider;
 
 
   @override
@@ -26,6 +29,9 @@ class _HomePageState extends State<HomePage> {
 
     _customerProvider = Provider.of<CustomerProvider>(context,listen: false);
     _customerProvider.getAllCustomers();
+
+    _expenseProvider = Provider.of<ExpenseProvider>(context);
+    _expenseProvider.getAllExpenseByMonth();
 
     super.didChangeDependencies();
 
