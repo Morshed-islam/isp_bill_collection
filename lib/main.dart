@@ -12,6 +12,8 @@ import 'package:isp_bill_collection/providers/customer_provider.dart';
 import 'package:isp_bill_collection/providers/due_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/expense_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => CustomerProvider()),
         ChangeNotifierProvider(create: (context)=> DueProvider()),
+        ChangeNotifierProvider(create: (context)=> ExpenseProvider()),
       ],
       child: MaterialApp(
         title: 'ISP Billing Collection',

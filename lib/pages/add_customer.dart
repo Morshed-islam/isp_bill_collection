@@ -311,7 +311,7 @@ class _AddCustomerState extends State<AddCustomer> {
           creation_date: Timestamp.fromDate(dateTime!));
 
 
-      final dueModel = DueModel(total_due_bill: num.parse(_dueController.text));
+      final dueModel = DueModel(total_due_bill: num.parse(_dueController.text),);
 
       Provider.of<CustomerProvider>(context,listen: false)
                 .saveCustomer(_customerModel, dueModel)

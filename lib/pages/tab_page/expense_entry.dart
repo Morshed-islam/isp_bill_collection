@@ -1,5 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:isp_bill_collection/model/expense_model.dart';
+import 'package:isp_bill_collection/providers/expense_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../../utils/constants.dart';
 
 class ExpenseEntryPage extends StatefulWidget {
   const ExpenseEntryPage({Key? key}) : super(key: key);
@@ -29,9 +35,9 @@ class _ExpenseEntryPageState extends State<ExpenseEntryPage> {
                 const SizedBox(
                   height: 10,
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
                   child: TextFormField(
                     controller: _costController,
                     keyboardType: TextInputType.number,
@@ -48,14 +54,15 @@ class _ExpenseEntryPageState extends State<ExpenseEntryPage> {
                     },
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
                   child: TextFormField(
+                    maxLines: 3,
                     controller: _descController,
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
+                      errorMaxLines: 2,
                       hintText: 'বিস্তারিত লিখুন',
                       prefixIcon: Icon(Icons.description),
                     ),
@@ -67,7 +74,6 @@ class _ExpenseEntryPageState extends State<ExpenseEntryPage> {
                     },
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: Card(
@@ -96,7 +102,6 @@ class _ExpenseEntryPageState extends State<ExpenseEntryPage> {
                 const SizedBox(
                   height: 20,
                 ),
-
               ],
             ),
           ),
@@ -124,7 +129,7 @@ class _ExpenseEntryPageState extends State<ExpenseEntryPage> {
     );
   }
 
-  void _showDatePickerDialog() async{
+  void _showDatePickerDialog() async {
     final _selectedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -139,10 +144,25 @@ class _ExpenseEntryPageState extends State<ExpenseEntryPage> {
   }
 
   void _savaDateToExpenseDb() {
+    if (_formKey.currentState!.validate()) {
+      final _expenseModel = ExpenseModel(
+          expense_amount: _costController.text,
+          desc: _descController.text,
+          day: dateTime!.day,
+          month: dateTime!.month,
+          year: dateTime!.year,
+          timestamp: Timestamp.fromDate(dateTime!));
 
-    if(_formKey.currentState!.validate()){
-
+      Provider.of<ExpenseProvider>(context, listen: false)
+          .saveExpenseData(_expenseModel)
+          .then((value) {
+        showMsg(context, 'খরচ যোগ হয়েছে!');
+        _costController.clear();
+        _descController.clear();
+        dateTime = null;
+      }).catchError((error) {
+        showMsg(context, error.toString());
+      });
     }
-
   }
 }

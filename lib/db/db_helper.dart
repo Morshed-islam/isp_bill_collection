@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:isp_bill_collection/model/customer_model.dart';
 import 'package:isp_bill_collection/model/due_model.dart';
+import 'package:isp_bill_collection/model/expense_model.dart';
 
 class DBHelper {
 
   static const collectionCustomer = 'Customers';
   static const collectionBilling = 'Billings';
   static const collectionDue = 'Dues';
+  static const collectionExpense = 'Expenses';
 
   static FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -27,6 +29,19 @@ class DBHelper {
 
     return writeBatch.commit();
   }
+
+
+  static Future<void> addExpenseDate (ExpenseModel expenseModel){
+
+    final writeBatch = _db.batch();
+    final expenseDoc = _db.collection(collectionExpense).doc();
+
+    expenseModel.admin_id = expenseDoc.id;
+    writeBatch.set(expenseDoc, expenseModel.toMap());
+
+    return writeBatch.commit();
+  }
+
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllCustomers()=>
       _db.collection(collectionCustomer).snapshots();
