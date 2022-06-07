@@ -36,6 +36,7 @@ class CustomerModel1 {
   }
 
 
+  //to fetch data
   factory CustomerModel1.fromMap(Map<String,dynamic> map) => CustomerModel1(
     id: map['id'],
     name: map['name'],

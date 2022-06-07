@@ -28,4 +28,16 @@ class DBHelper {
     return writeBatch.commit();
   }
 
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllCustomers()=>
+      _db.collection(collectionCustomer).snapshots();
+
+
+  //TODO to be continued
+   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchTotalDueByUserID(String userId)=>
+       _db.collection(collectionDue).where('customer_id', isEqualTo: userId).snapshots();
+
+   
+
+
+
 }

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isp_bill_collection/auth/auth_serrvice.dart';
 import 'package:isp_bill_collection/pages/all_customer.dart';
+import 'package:isp_bill_collection/pages/expense_page.dart';
 import 'package:isp_bill_collection/pages/login_page.dart';
+import 'package:isp_bill_collection/providers/customer_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:isp_bill_collection/pages/add_customer.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/home';
@@ -14,11 +17,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  late CustomerProvider _customerProvider;
+
+
+  @override
+  void didChangeDependencies(){
+
+    _customerProvider = Provider.of<CustomerProvider>(context,listen: false);
+    _customerProvider.getAllCustomers();
+
+    super.didChangeDependencies();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ISP Billing Collection'),
+        title: const Text('নেট বিল কালেকশন'),
         elevation: 2,
         flexibleSpace: Container(
           alignment: Alignment.bottomRight,
@@ -57,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     setState(() {
                       Navigator.pushNamed(context, AddCustomer.routeName);
-                      print('Add customer is pressed');
+
                     });
                   },
                   splashColor: Colors.black12,
@@ -160,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                       Lottie.asset('images/report.json',
                           width: 100, height: 100, fit: BoxFit.fill),
                       Text(
-                        'রিপোর্স্ট',
+                        'রিপোর্টস',
                         style: GoogleFonts.acme(textStyle: TextStyle(fontSize: 17)),
                       )
                     ],
@@ -172,7 +189,10 @@ class _HomePageState extends State<HomePage> {
           Card(
             child: OverflowBox(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, ExpensePage.routeName);
+
+                },
                 splashColor: Colors.black12,
                 child: Center(
                   child: Column(

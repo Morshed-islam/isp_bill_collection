@@ -6,7 +6,10 @@ import 'package:isp_bill_collection/db/db_helper.dart';
 import 'package:isp_bill_collection/model/customer_model.dart';
 import 'package:isp_bill_collection/model/due_model.dart';
 import 'package:isp_bill_collection/pages/home_page.dart';
+import 'package:isp_bill_collection/providers/customer_provider.dart';
 import 'package:isp_bill_collection/utils/constants.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 const _packageDropdownList = [
   '১ Mbps',
@@ -40,6 +43,7 @@ class _AddCustomerState extends State<AddCustomer> {
   final _nameController = TextEditingController();
   final _billController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _dueController = TextEditingController();
 
   String? package;
   String? village;
@@ -50,6 +54,7 @@ class _AddCustomerState extends State<AddCustomer> {
     _nameController.dispose();
     _billController.dispose();
     _phoneController.dispose();
+    _dueController.dispose();
     super.dispose();
   }
 
@@ -57,7 +62,7 @@ class _AddCustomerState extends State<AddCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('নতুন কাস্টমার'),
+        title: const Text('নতুন কাস্টমার'),
       ),
       body: ListView(
         children: [
@@ -66,7 +71,7 @@ class _AddCustomerState extends State<AddCustomer> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -74,7 +79,7 @@ class _AddCustomerState extends State<AddCustomer> {
                   child: TextFormField(
                     controller: _nameController,
                     keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'কাস্টমারের নাম',
                       prefixIcon: Icon(Icons.verified_user),
@@ -88,11 +93,11 @@ class _AddCustomerState extends State<AddCustomer> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
                   child: TextFormField(
                     controller: _billController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'মাসিক বিল',
                       prefixIcon: Icon(Icons.balance),
@@ -106,11 +111,24 @@ class _AddCustomerState extends State<AddCustomer> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  child: TextFormField(
+                    controller: _dueController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'বকেয়া বিল (যদি বকেয়া থাকে)',
+                      prefixIcon: Icon(Icons.balance),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
                   child: TextFormField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'মোবাইল নং',
                       prefixIcon: Icon(Icons.phone),
@@ -123,7 +141,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Padding(
@@ -137,7 +155,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         borderRadius: BorderRadius.circular(1.0),
                       ),
                       child: DropdownButtonFormField<String>(
-                        hint: Text('গ্রাম সিলেক্ট করুন'),
+                        hint: const Text('গ্রাম সিলেক্ট করুন'),
                         value: village,
                         onChanged: (value) {
                           village = value;
@@ -148,12 +166,12 @@ class _AddCustomerState extends State<AddCustomer> {
                                   value: e,
                                 ))
                             .toList(),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Error....';
-                            }
-                            return null;
-                          },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Error....';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -169,8 +187,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         borderRadius: BorderRadius.circular(1.0),
                       ),
                       child: DropdownButtonFormField<String>(
-                        hint: Text('প্যাকেজ সিলেক্ট করুন'),
-
+                        hint: const Text('প্যাকেজ সিলেক্ট করুন'),
                         value: package,
                         onChanged: (value) {
                           package = value;
@@ -191,8 +208,6 @@ class _AddCustomerState extends State<AddCustomer> {
                     ),
                   ),
                 ),
-
-
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: Card(
@@ -204,92 +219,109 @@ class _AddCustomerState extends State<AddCustomer> {
                         borderRadius: BorderRadius.circular(1.0),
                       ),
                       child: Row(
-                        key: _formKey,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           TextButton(
-                            child: Text('এখানে ক্লিক করুন'),
+                            child: const Text('এখানে ক্লিক করুন'),
                             onPressed: _showDatePickerDialog,
                           ),
-                          
-                          Text(dateTime == null ? 'তারিখ পাওয়া যায়নি!' : DateFormat('dd/MM/yyyy').format(dateTime!) )
+                          Text(dateTime == null
+                              ? 'তারিখ পাওয়া যায়নি!'
+                              : DateFormat('dd/MM/yyyy').format(dateTime!))
                         ],
                       ),
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
 
-                SizedBox(height: 20,),
+                // Expanded(
+                //   child: TextFormField(
+                //     controller: _billController,
+                //     keyboardType: TextInputType.number,
+                //     decoration: const InputDecoration(
+                //       border: OutlineInputBorder(),
+                //       hintText: 'মাসিক বিল',
+                //       prefixIcon: Icon(Icons.balance),
+                //     ),
+                //     validator: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return 'emptyFieldErrMsg';
+                //       }
+                //       return null;
+                //     },
+                //   ),
+                // ),
+
+
 
 
               ],
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-            child:  InkWell(
+            child: InkWell(
               child: Center(
                 child: ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('সেভ করুন',style: TextStyle(fontSize: 17,),),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'সেভ করুন',
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
                   ),
                   onPressed: _savaDateToFirebasedb,
                 ),
               ),
             ),
           ),
-
         ],
       ),
     );
   }
 
-  _showDatePickerDialog() async{
-
+  _showDatePickerDialog() async {
     final _selectedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year-1),
-        lastDate: DateTime.now()
-    );
+        firstDate: DateTime(DateTime.now().year - 1),
+        lastDate: DateTime.now());
 
-    if(_selectedDate != null){
-      setState((){
+    if (_selectedDate != null) {
+      setState(() {
         dateTime = _selectedDate;
       });
     }
-
   }
 
   _savaDateToFirebasedb() {
-
-    if(_formKey.currentState!.validate()){
-
+    print("Enter the Firebase method");
+    if (_formKey.currentState!.validate()) {
       final _customerModel = CustomerModel1(
           name: _nameController.text,
           village: village!,
           phone: _phoneController.text,
           bill: num.parse(_billController.text),
           package: package!,
-          creation_date: Timestamp.fromDate(dateTime!)
-      );
+          creation_date: Timestamp.fromDate(dateTime!));
 
-      final dueModel = DueModel();
-      
-      DBHelper.addNewCustomer(_customerModel, dueModel).then((value){
+
+      final dueModel = DueModel(total_due_bill: num.parse(_dueController.text));
+
+      Provider.of<CustomerProvider>(context,listen: false)
+                .saveCustomer(_customerModel, dueModel)
+          .then((value) {
         showMsg(context, 'নতুন কাস্টমার যোগ হয়েছে!');
+
         Navigator.pushReplacementNamed(context, HomePage.routeName);
-
-
-      }).catchError((error){
+      }).catchError((error) {
         showMsg(context, error.toString());
-
       });
-      
-
     }
-
   }
 }
