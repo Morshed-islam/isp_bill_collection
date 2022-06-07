@@ -29,7 +29,7 @@ class DueModel {
   factory DueModel.fromMap(Map<String,dynamic> map) => DueModel(
     due_id: map['due_id'],
     customer_id: map['customer_id'],
-    total_due_bill: map['total_due_bill'],
+    total_due_bill: map['due_bill'],
     day: map['day'],
     month: map['month'],
     year: map['year'],

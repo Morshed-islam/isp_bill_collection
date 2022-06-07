@@ -43,14 +43,16 @@ class DBHelper {
   }
 
 
+
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllCustomers(){
     return _db.collection(collectionCustomer).snapshots();
   }
 
+  // static Stream<QuerySnapshot<Map<String, dynamic>>> fetchTotalDueByUserID()=>
+  //     _db.collection(collectionDue).snapshots();
 
-  //TODO to be continued
-   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchTotalDueByUserID(String userId)=>
-       _db.collection(collectionDue).where('customer_id', isEqualTo: userId).snapshots();
+   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchTotalDueByUserID(String customerId)=>
+       _db.collection(collectionDue).where('customer_id', isEqualTo: customerId).snapshots();
 
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchExpenseByMonth() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isp_bill_collection/auth/auth_serrvice.dart';
 import 'package:isp_bill_collection/pages/all_customer.dart';
+import 'package:isp_bill_collection/pages/billing_page.dart';
 import 'package:isp_bill_collection/pages/expense_page.dart';
 import 'package:isp_bill_collection/pages/login_page.dart';
 import 'package:isp_bill_collection/providers/customer_provider.dart';
@@ -132,7 +133,9 @@ class _HomePageState extends State<HomePage> {
           Card(
             child: OverflowBox(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, BillingPage.routeName);
+                },
                 splashColor: Colors.black12,
                 child: Center(
                   child: Column(

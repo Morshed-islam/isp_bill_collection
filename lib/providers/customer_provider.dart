@@ -12,8 +12,7 @@ class CustomerProvider extends ChangeNotifier {
 
   void getAllCustomers() {
     DBHelper.fetchAllCustomers().listen((event) {
-      customerList = List.generate(event.docs.length,
-          (index) => CustomerModel1.fromMap(event.docs[index].data()));
+      customerList = List.generate(event.docs.length, (index) => CustomerModel1.fromMap(event.docs[index].data()));
       notifyListeners();
     });
   }
