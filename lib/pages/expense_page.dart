@@ -31,7 +31,11 @@ class _ExpensePageState extends State<ExpensePage> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Flutter Tabs Demo'),
+            title: Text('খরচের হিসেব'),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.add), text: "খরচ লিখুন"),

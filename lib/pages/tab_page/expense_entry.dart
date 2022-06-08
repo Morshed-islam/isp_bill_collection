@@ -146,7 +146,7 @@ class _ExpenseEntryPageState extends State<ExpenseEntryPage> {
   void _savaDateToExpenseDb() {
     if (_formKey.currentState!.validate()) {
       final _expenseModel = ExpenseModel(
-          expense_amount: _costController.text,
+          expense_amount: num.parse(_costController.text),
           desc: _descController.text,
           day: dateTime!.day,
           month: dateTime!.month,

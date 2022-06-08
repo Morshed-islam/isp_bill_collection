@@ -89,11 +89,15 @@ class DBHelper {
   static Stream<QuerySnapshot<Map<String, dynamic>>> fetchExpenseByMonth() {
     var date =  DateTime.now();
      return _db.collection(collectionExpense)
-        .where('year', isGreaterThanOrEqualTo: 2022)
-        .orderBy('year', descending: true)
+        .where('month', isEqualTo: DateTime.now().month)
+         .where('year',isEqualTo: DateTime.now().year)
         .snapshots();
      //DateTime(date.year, 1)
+
+
   }
+
+
 
 
 }

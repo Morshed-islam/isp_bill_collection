@@ -5,6 +5,7 @@ import 'package:isp_bill_collection/pages/all_customer.dart';
 import 'package:isp_bill_collection/pages/billing_page.dart';
 import 'package:isp_bill_collection/pages/expense_page.dart';
 import 'package:isp_bill_collection/pages/login_page.dart';
+import 'package:isp_bill_collection/pages/tab_page/expense_list.dart';
 import 'package:isp_bill_collection/providers/customer_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:isp_bill_collection/pages/add_customer.dart';
@@ -22,17 +23,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   late CustomerProvider _customerProvider;
-  late ExpenseProvider _expenseProvider;
-
 
   @override
   void didChangeDependencies(){
 
     _customerProvider = Provider.of<CustomerProvider>(context,listen: false);
     _customerProvider.getAllCustomers();
-
-    _expenseProvider = Provider.of<ExpenseProvider>(context);
-    _expenseProvider.getAllExpenseByMonth();
 
     super.didChangeDependencies();
 

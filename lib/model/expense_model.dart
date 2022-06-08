@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ExpenseModel {
   String? admin_id;
-  String? expense_amount;
+  num? expense_amount;
   String? desc;
   int? day;
   int? month;

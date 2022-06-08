@@ -10,6 +10,7 @@ import 'package:isp_bill_collection/pages/expense_page.dart';
 import 'package:isp_bill_collection/pages/home_page.dart';
 import 'package:isp_bill_collection/pages/launcher_page.dart';
 import 'package:isp_bill_collection/pages/login_page.dart';
+import 'package:isp_bill_collection/pages/tab_page/expense_list.dart';
 import 'package:isp_bill_collection/providers/billing_provider.dart';
 import 'package:isp_bill_collection/providers/customer_provider.dart';
 import 'package:isp_bill_collection/providers/due_provider.dart';
