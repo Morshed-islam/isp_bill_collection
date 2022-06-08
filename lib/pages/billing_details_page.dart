@@ -36,6 +36,8 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
   num? paidAmount;
   String? dueId;
 
+
+
   @override
   void dispose() {
     _paidAmountController.dispose();
@@ -228,7 +230,13 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
   }
 
 
-  void _dbModel(BillingModel _billingModel,MonthlyDueModel _monthlyDueModel){
+  void _dbBillingModel(){
+
+
+
+  }
+
+  void _dbMonthlyModel(String _customer_id,String _amount,DateTime _dateTime,String _selectedPayment,int _day,int _month,int _year){
 
   }
 
@@ -236,34 +244,37 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
     if (_formKey.currentState!.validate()) {
       print('Check Statement');
 
-      final _billingModel = BillingModel(
-          customerId: customer_id,
-          billAmount: num.parse(_paidAmountController.text),
-          billStatus: selectedPayment.toString(),
-          billingTime: Timestamp.fromDate(dateTime!),
-          day: dateTime!.day,
-          month: dateTime!.month,
-          year: dateTime!.year);
 
-      final _monthlyDueModel = MonthlyDueModel(
-          customerId: customer_id,
-          dueAmount: num.parse(_paidAmountController.text),
-          dueTime: Timestamp.fromDate(dateTime!),
-          duesStatus: selectedPayment.toString(),
-          day: dateTime!.day,
-          month: dateTime!.month,
-          year: dateTime!.year);
 
       if (selectedPayment == 'paid') {
+
+      final _billingModel = BillingModel(
+            customerId: customer_id,
+            billAmount: num.parse(_paidAmountController.text),
+            billStatus: selectedPayment.toString(),
+            billingTime: Timestamp.fromDate(dateTime!),
+            day: dateTime!.day,
+            month: dateTime!.month,
+            year: dateTime!.year);
+
+       final _monthlyDueModel = MonthlyDueModel(
+            customerId: customer_id,
+            dueAmount: 0,
+            dueTime: Timestamp.fromDate(dateTime!),
+            // duesStatus: selectedPayment.toString(),
+            day: dateTime!.day,
+            month: dateTime!.month,
+            year: dateTime!.year);
+
         if (paidAmount == previousTotalDue) {
-          Provider.of<DueProvider>(context, listen: true)
+          Provider.of<DueProvider>(context, listen: false)
               .updateDueAmountByDueId(dueId!, 0)
               .then((value) {})
               .catchError((onError) {
             showMsg(context, onError.toString());
           });
 
-          Provider.of<BillingProvider>(context, listen: true)
+          Provider.of<BillingProvider>(context, listen: false)
               .saveBilling(customer_id!, _billingModel, _monthlyDueModel)
               .then((value) {
             showMsg(context, 'মাসিক বিল যোগ করা হয়েছে!');
@@ -277,7 +288,7 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
           print('Due 0 saved to (DueByMonth) collection');
         } else if (paidAmount! > previousTotalDue!) {
           //update due amount
-          Provider.of<DueProvider>(context, listen: true)
+          Provider.of<DueProvider>(context, listen: false)
               .updateDueAmountByDueId(dueId!, 0)
               .then((value) {})
               .catchError((onError) {
@@ -285,7 +296,7 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
           });
 
           //save date to billings and MonthlyDues Collection
-          Provider.of<BillingProvider>(context, listen: true)
+          Provider.of<BillingProvider>(context, listen: false)
               .saveBilling(customer_id!, _billingModel, _monthlyDueModel)
               .then((value) {
             showMsg(context, 'মাসিক বিল যোগ করা হয়েছে!');
@@ -300,7 +311,7 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
         } else if (paidAmount! < previousTotalDue!) {
           num _totalDueAmount = (previousTotalDue! - paidAmount!);
           //update due amount
-          Provider.of<DueProvider>(context, listen: true)
+          Provider.of<DueProvider>(context, listen: false)
               .updateDueAmountByDueId(dueId!, _totalDueAmount)
               .then((value) {})
               .catchError((onError) {
@@ -308,7 +319,7 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
           });
 
           //save date to billings and MonthlyDues Collection
-          Provider.of<BillingProvider>(context, listen: true)
+          Provider.of<BillingProvider>(context, listen: false)
               .saveBilling(customer_id!, _billingModel, _monthlyDueModel)
               .then((value) {
             showMsg(context, 'মাসিক বিল যোগ করা হয়েছে!');
@@ -322,13 +333,43 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
           print('totalDue = previousDue - paidAmount');
         }
       } else if (selectedPayment == 'due') {
+
+        final _billingModel = BillingModel(
+            customerId: customer_id,
+            billAmount: 0,
+            billStatus: selectedPayment.toString(),
+            billingTime: Timestamp.fromDate(dateTime!),
+            day: dateTime!.day,
+            month: dateTime!.month,
+            year: dateTime!.year);
+
+        final _monthlyDueModel = MonthlyDueModel(
+            customerId: customer_id,
+            dueAmount: num.parse(_paidAmountController.text),
+            dueTime: Timestamp.fromDate(dateTime!),
+            // duesStatus: selectedPayment.toString(),
+            day: dateTime!.day,
+            month: dateTime!.month,
+            year: dateTime!.year);
+
         num _totalDueAmount = paidAmount! + previousTotalDue!;
 
         //update due amount
-        Provider.of<DueProvider>(context, listen: true)
+        Provider.of<DueProvider>(context, listen: false)
             .updateDueAmountByDueId(dueId!, _totalDueAmount)
             .then((value) {
           showMsg(context, 'বকেয়া বিল যোগ করা হয়েছে!');
+          Navigator.pushReplacementNamed(context, BillingPage.routeName);
+        }).catchError((onError) {
+          showMsg(context, onError.toString());
+        });
+
+
+        //save date to billings and MonthlyDues Collection
+        Provider.of<BillingProvider>(context, listen: false)
+            .saveBilling(customer_id!, _billingModel, _monthlyDueModel)
+            .then((value) {
+          // showMsg(context, 'মাসিক বিল যোগ করা হয়েছে!');
           Navigator.pushReplacementNamed(context, BillingPage.routeName);
         }).catchError((onError) {
           showMsg(context, onError.toString());
