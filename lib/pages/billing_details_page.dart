@@ -6,8 +6,8 @@ import 'package:isp_bill_collection/providers/due_provider.dart';
 import 'package:provider/provider.dart';
 
 const _paymentList = [
-  'নগদ',
-  'বাকি',
+  'paid',
+  'due',
   'বিকাশ/রকেট'
 ];
 
@@ -26,10 +26,13 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
   String? name;
 
   final _paidAmountController = TextEditingController();
+  final _total_due_controller = TextEditingController();
 
-  String? payment;
+  String? selectedPayment;
   DateTime? dateTime;
-  num? temp;
+  String? total_due;
+  num? previousTotalDue;
+  num? paidAmount;
 
 
   @override
@@ -41,7 +44,10 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
   @override
   void didChangeDependencies() {
     _dueProvider = Provider.of<DueProvider>(context, listen: true);
-    final argsList = ModalRoute.of(context)!.settings.arguments as List;
+    final argsList = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as List;
     //
     customer_id = argsList[0];
     name = argsList[1];
@@ -56,18 +62,28 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(name!),
+        // automaticallyImplyLeading: false,
+
       ),
       body: ListView.builder(
           itemCount: _dueProvider.duesList.length,
           itemBuilder: (context, index) {
-            print('Hello here ${_dueProvider.duesList.length}');
+            // print('${_dueProvider.duesList.length}');
             final dues = _dueProvider.duesList[index];
+            previousTotalDue = dues.total_due_bill;
+            // setState(() async{
+            //    temp = await dues.total_due_bill;
+            //   print('Temp Due Data: ${_dueProvider.duesList.length}');
+            // });
+            // print('Temp Due Data Outside SetState: $temp');
+
+
             return Form(
               key: _formKey,
               child: Column(
                 children: [
                   Card(
-                    color: Colors.black,
+                    color: Colors.white,
                     margin: const EdgeInsets.only(left: 12, right: 12, top: 10),
                     elevation: 4,
                     child: Container(
@@ -81,18 +97,18 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       width: double.infinity,
-                      child: Text(
-                        'মোট বকেয়া আছে: ${dues.total_due_bill} টাকা',
+                      child: Text('মোট বকেয়া আছে: ${dues.total_due_bill} টাকা',
+                        key: ValueKey<num>(dues.total_due_bill),
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.redAccent,
                         ),
                       ),
+
                     ),
                   ),
 
-                  _temData(dues.total_due_bill),
 
                   SizedBox(height: 5),
 
@@ -108,15 +124,16 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
                         ),
                         child: DropdownButtonFormField<String>(
                           hint: const Text('পেমেন্ট সিলেক্ট করুন'),
-                          value: payment,
+                          value: selectedPayment,
                           onChanged: (value) {
-                            payment = value;
+                            selectedPayment = value;
                           },
                           items: _paymentList
-                              .map((e) => DropdownMenuItem(
-                                    child: (Text(e)),
-                                    value: e,
-                                  ))
+                              .map((e) =>
+                              DropdownMenuItem(
+                                child: (Text(e)),
+                                value: e,
+                              ))
                               .toList(),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -133,8 +150,12 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
 
                   Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
                     child: TextFormField(
+                      onChanged: (s){
+                        paidAmount = num.parse(
+                            _paidAmountController.text);
+                      },
                       controller: _paidAmountController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
@@ -206,19 +227,17 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
 
               ),
             );
-
-
-
           }),
     );
   }
 
   void _showDatePickerDialog() async {
-
     final _selectedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year - 1),
+        firstDate: DateTime(DateTime
+            .now()
+            .year - 1),
         lastDate: DateTime.now());
 
     if (_selectedDate != null) {
@@ -228,14 +247,34 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
     }
   }
 
-  void _savaDateToBillingDb() {
-    print(temp);
-    if(_formKey.currentState!.validate()){
+  void _savaDateToBillingDb() async {
+    // if(_formKey.currentState!.validate()){
 
+    print('Check Statement');
+
+    // paidAmount =  num.parse(_total_due_controller.text);
+    // paidAmount =  num.tryParse(paid);
+
+    if (selectedPayment == 'paid') {
+      if (paidAmount == previousTotalDue) {
+        print('First Statement');
+        print('data saved to (PaidCollection)');
+        print('Due 0 saved to (DueByMonth) collection');
+
+      } else if (paidAmount! > previousTotalDue!) {
+        print('2nd Statement');
+        print('data saved to (PaidCollection)');
+        print('Due 0 saved to (DueByMonth) collection');
+
+      }else if(paidAmount! < previousTotalDue!){
+        print('3rd Statement');
+        print('data saved to (PaidCollection)');
+        print('totalDue = previousDue - paidAmount');
+      }
+
+    }else if(selectedPayment == 'due'){
+      num totalDue = paidAmount! + previousTotalDue!;
+      print('Total Due: $totalDue');
     }
-  }
-
-  _temData(num v) {
-    temp = v;
   }
 }
