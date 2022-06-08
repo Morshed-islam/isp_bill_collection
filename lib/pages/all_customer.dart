@@ -24,11 +24,29 @@ class _AllCustomerState extends State<AllCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('কাস্টমার লিস্ট'),
-      ),
+          title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+            const Text(
+              'কাস্টমার লিস্ট',
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  const BoxShadow(color: Colors.blueGrey, spreadRadius: 5),
+                ],
+              ),
+              child: Text('${_provider.getTotalCustomer}',),
+            ),
+          ])),
       body: ListView.builder(
         shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         itemCount: _provider.customerList.length,
         itemBuilder: (context, index) {
           final customer = _provider.customerList[index];
@@ -39,25 +57,27 @@ class _AllCustomerState extends State<AllCustomer> {
                     arguments: [
                       customer.id,
                       customer.name,
+                      customer.bill,
+                      customer.phone,
                     ]);
               },
               title: Text(customer.name),
               trailing: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(color: Colors.blueGrey, spreadRadius: 5),
                   ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'মাসিক বিল:',
+                    const Text(
+                      'প্যাকেজঃ',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                    Text('Tk ${customer.bill}',
-                        style: TextStyle(
+                    Text(customer.package,
+                        style: const TextStyle(
                           color: Colors.greenAccent,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -81,7 +101,7 @@ class _AllCustomerState extends State<AllCustomer> {
                 ),
               ),
 
-            //      Text('গ্রামঃ ${customer.village}
+              //      Text('গ্রামঃ ${customer.village}
             ),
             elevation: 2,
           );

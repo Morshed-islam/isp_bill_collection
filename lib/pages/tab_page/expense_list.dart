@@ -25,9 +25,20 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
 
   @override
   void didChangeDependencies() {
-
-    List months =
-    ['jan', 'feb', 'mar', 'apr', 'may','jun','jul','aug','sep','oct','nov','dec'];
+    List months = [
+      'jan',
+      'feb',
+      'mar',
+      'apr',
+      'may',
+      'jun',
+      'jul',
+      'aug',
+      'sep',
+      'oct',
+      'nov',
+      'dec'
+    ];
     // var now = new DateTime.now().month;
     // current_mon = now.month;
     // print(months[current_mon-1]);
@@ -35,8 +46,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
 
     _expenseprovider = Provider.of<ExpenseProvider>(context, listen: true);
     _expenseprovider.getAllExpenseByMonth();
-
-
 
     super.didChangeDependencies();
   }
@@ -47,9 +56,12 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Total Due: ',style: TextStyle(
-          color: Colors.red
-        ),),
+        title: Text(
+          'এই মাসের মোট খরচ: ${_expenseprovider.getTotalDueAmount} টাকা',
+          style: TextStyle(
+            color: Colors.red,
+          ),
+        ),
         backgroundColor: Colors.white,
       ),
       body: ListView.builder(
@@ -57,8 +69,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         itemCount: _expenseprovider.expenseList.length,
         itemBuilder: (context, index) {
-
-
           final expense = _expenseprovider.expenseList[index];
 
           //  sumOfExpense =0;
@@ -69,7 +79,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           // _expenseprovider.expenseList.forEach((element) {
           //   sumOfExpense = element.expense_amount! + sumOfExpense!;
           // });
-
 
           return Column(
             children: [
@@ -115,8 +124,8 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       onTap: () {},
                       title: Text('বিস্তারিত: ${expense.desc}'),
                       trailing: Text('টাকা:\n${expense.expense_amount}'),
-                      subtitle:
-                          Text('তারিখ: 0${expense.day}/0${expense.month}/${expense.year}'),
+                      subtitle: Text(
+                          'তারিখ: 0${expense.day}/0${expense.month}/${expense.year}'),
                     ),
                   ],
                 ),
@@ -130,21 +139,13 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   }
 
   void _filterdata() {
-
-    if(selectedListValue == 'This Month'){
-
-
+    if (selectedListValue == 'This Month') {
       print(selectedListValue.toString());
       print(_expenseprovider.expenseList[0]);
-
-    }else if(selectedListValue == 'This Year'){
+    } else if (selectedListValue == 'This Year') {
       print(selectedListValue.toString());
-
-    }else if(selectedListValue == 'Last Month'){
+    } else if (selectedListValue == 'Last Month') {
       print(selectedListValue.toString());
-
     }
-
-
   }
 }

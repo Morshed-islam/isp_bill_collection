@@ -16,4 +16,7 @@ class CustomerProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  int get getTotalCustomer => customerList.length;
+
 }

@@ -237,26 +237,6 @@ class _AddCustomerState extends State<AddCustomer> {
                   height: 20,
                 ),
 
-                // Expanded(
-                //   child: TextFormField(
-                //     controller: _billController,
-                //     keyboardType: TextInputType.number,
-                //     decoration: const InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       hintText: 'মাসিক বিল',
-                //       prefixIcon: Icon(Icons.balance),
-                //     ),
-                //     validator: (value) {
-                //       if (value == null || value.isEmpty) {
-                //         return 'emptyFieldErrMsg';
-                //       }
-                //       return null;
-                //     },
-                //   ),
-                // ),
-
-
-
 
               ],
             ),
