@@ -7,7 +7,7 @@ class ExpenseProvider extends ChangeNotifier{
   late List<ExpenseModel> expenseList = [];
 
   Future<void> saveExpenseData(ExpenseModel expenseModel){
-    return DBHelper.addExpenseDate(expenseModel);
+    return DBHelper.addExpenseData(expenseModel);
 
   }
 

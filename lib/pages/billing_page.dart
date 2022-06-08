@@ -40,6 +40,7 @@ class _BillingPageState extends State<BillingPage> {
                     arguments: [
                       customer.id,
                       customer.name,
+
                     ]);
               },
               title: Text(customer.name),
