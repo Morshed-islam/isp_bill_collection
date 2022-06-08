@@ -63,10 +63,11 @@ class _AllCustomerState extends State<AllCustomer> {
               },
               title: Text(customer.name),
               trailing: Container(
+                height: 40,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(3),
                   boxShadow: const [
-                    BoxShadow(color: Colors.blueGrey, spreadRadius: 5),
+                    BoxShadow(color: Colors.blueGrey, spreadRadius: 4),
                   ],
                 ),
                 child: Column(

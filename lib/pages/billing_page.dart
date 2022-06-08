@@ -45,22 +45,23 @@ class _BillingPageState extends State<BillingPage> {
               },
               title: Text(customer.name),
               trailing: Container(
+                height: 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.blueGrey, spreadRadius: 5),
+                  boxShadow: [
+                    BoxShadow(color: Colors.lightBlue, spreadRadius: 5),
                   ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      'মাসিক বিল:',
+                      "মাসিক বিলঃ",
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                    Text('Tk ${customer.bill}',
+                    Text('\u09F3${customer.bill}',
                         style: TextStyle(
-                          color: Colors.greenAccent,
+                          color: Colors.orangeAccent,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         )),
