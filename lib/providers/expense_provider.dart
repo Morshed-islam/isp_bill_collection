@@ -18,8 +18,24 @@ class ExpenseProvider extends ChangeNotifier {
     });
   }
 
+  void getAllExpenseByLastMonth() {
+    DBHelper.fetchExpenseByLastMonth().listen((event) {
+      expenseList = List.generate(event.docs.length, (index) =>
+          ExpenseModel.fromMap(event.docs[index].data()));
+      notifyListeners();
+    });
+  }
 
-  num get getTotalDueAmount{
+  void getAllExpenseByThisYear() {
+    DBHelper.fetchExpenseByThisYear().listen((event) {
+      expenseList = List.generate(event.docs.length, (index) =>
+          ExpenseModel.fromMap(event.docs[index].data()));
+      notifyListeners();
+    });
+  }
+
+
+  num get getTotalExpenseAmount{
     num total = 0;
     expenseList.forEach((element) {
       total += element.expense_amount!;

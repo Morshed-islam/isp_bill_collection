@@ -1,3 +1,4 @@
+import 'package:bangla_utilities/bangla_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:isp_bill_collection/providers/expense_provider.dart';
 import 'package:provider/provider.dart';
@@ -6,9 +7,9 @@ import '../../db/db_helper.dart';
 import '../../utils/constants.dart';
 
 final _dropDownList = [
-  'This Month',
-  'Last Month',
-  'This Year',
+  'এই মাসের খরচ',
+  'গত মাসের খরচ',
+  'এই বছরের খরচ',
 ];
 
 class ExpenseListPage extends StatefulWidget {
@@ -22,6 +23,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   late ExpenseProvider _expenseprovider;
 
   num? sumOfExpense;
+  bool pressAttention = true;
 
   @override
   void didChangeDependencies() {
@@ -43,9 +45,12 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
     // current_mon = now.month;
     // print(months[current_mon-1]);
     // var prevMonth = new DateTime(date.year, date.month - 1, date.day);
-
-    _expenseprovider = Provider.of<ExpenseProvider>(context, listen: true);
-    _expenseprovider.getAllExpenseByMonth();
+    setState(() {
+      _expenseprovider = Provider.of<ExpenseProvider>(
+        context,
+      );
+    });
+    // _expenseprovider.getAllExpenseByMonth();
 
     super.didChangeDependencies();
   }
@@ -55,15 +60,116 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'এই মাসের মোট খরচ: ${_expenseprovider.getTotalDueAmount} টাকা',
-          style: TextStyle(
-            color: Colors.red,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100), // Set this height
+        child: Container(
+          color: Colors.black12,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 1.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: Card(
+                    elevation: 4,
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(1.0),
+                      ),
+                      child: DropdownButtonFormField<String>(
+                        hint: const Text('সিলেক্ট করুন'),
+                        value: selectedListValue,
+                        isExpanded: true,
+                        onChanged: (value) {
+                          selectedListValue = value;
+                          print('Onchanged');
+                          if (selectedListValue == 'এই মাসের খরচ') {
+                            _getThisMonthValue();
+                          } else if (selectedListValue == 'গত মাসের খরচ') {
+                            _getLastMonthValue();
+                          } else {
+                            _getLastYearValue();
+                          }
+                        },
+                        items: _dropDownList
+                            .map((e) => DropdownMenuItem(
+                                  child: (Text(e)),
+                                  value: e,
+                                ))
+                            .toList(),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Error....';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+
+                Text(
+                    'মোট খরচঃ ${BanglaUtility.englishToBanglaDigit(englishDigit: _expenseprovider.getTotalExpenseAmount.toInt())} টাকা',
+                    style: const TextStyle(
+                        fontSize: 22,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold)),
+
+                // Text(' ${selectedListValue == null? 'কোনো খরচ নেই' : '${selectedListValue.toString()} ${_expenseprovider.getTotalDueAmount} টাকা' }',style: const TextStyle(
+                //   fontSize: 22,
+                //   color: Colors.red,
+                //   fontWeight: FontWeight.bold
+                // )),
+              ],
+            ),
           ),
         ),
-        backgroundColor: Colors.white,
       ),
+
+      // AppBar(
+      //   title: Text(
+      //     'এই মাসের মোট খরচ: ${_expenseprovider.getTotalDueAmount} টাকা',
+      //     style: TextStyle(
+      //       color: Colors.red,
+      //     ),
+      //   ),
+      //   actions: [
+      //     Container(
+      //       margin: EdgeInsets.only(right: 20),
+      //       child: Padding(
+      //         padding: const EdgeInsets.only(right: 1.0),
+      //         child: Row(
+      //           crossAxisAlignment: CrossAxisAlignment.center,
+      //           mainAxisAlignment: MainAxisAlignment.start,
+      //           children: [
+      //             ElevatedButton(
+      //               child: Text('This Month'),
+      //               onPressed: _getThisMonthValue,
+      //             ),
+      //             SizedBox(width: 5,),
+      //             ElevatedButton(
+      //               child: Text('Last Month'),
+      //               onPressed: _getThisMonthValue,
+      //             ),
+      //             SizedBox(width: 5,),
+      //
+      //             ElevatedButton(
+      //               child: Text('This Year'),
+      //               onPressed: _getThisMonthValue,
+      //             ),
+      //           ],
+      //
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      //   backgroundColor: Colors.white,
+      // ),
       body: ListView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -71,51 +177,11 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
         itemBuilder: (context, index) {
           final expense = _expenseprovider.expenseList[index];
 
-          //  sumOfExpense =0;
-          // for(int i=0; i <_expenseprovider.expenseList.length; i++){
-          //   sumOfExpense = expense.expense_amount! + sumOfExpense!;
-          //   print(sumOfExpense);
-          // }
-          // _expenseprovider.expenseList.forEach((element) {
-          //   sumOfExpense = element.expense_amount! + sumOfExpense!;
-          // });
+          // totalExp = _expenseprovider.getTotalDueAmount;
 
           return Column(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              //   child: Card(
-              //     elevation: 4,
-              //     child: Container(
-              //       padding: const EdgeInsets.only(left: 10),
-              //       decoration: BoxDecoration(
-              //         color: Colors.white,
-              //         borderRadius: BorderRadius.circular(1.0),
-              //       ),
-              //       child: DropdownButtonFormField<String>(
-              //         hint: const Text('Filter your data'),
-              //         value: selectedListValue,
-              //         onChanged: (value) {
-              //           selectedListValue = value;
-              //           _filterdata();
-              //         },
               //
-              //         items: _dropDownList
-              //             .map((e) => DropdownMenuItem(
-              //                   child: (Text(e)),
-              //                   value: e,
-              //                 ))
-              //             .toList(),
-              //         validator: (value) {
-              //           if (value == null || value.isEmpty) {
-              //             return 'Error....';
-              //           }
-              //           return null;
-              //         },
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Card(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -123,9 +189,10 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                     ListTile(
                       onTap: () {},
                       title: Text('বিস্তারিত: ${expense.desc}'),
-                      trailing: Text('টাকা:\n${expense.expense_amount}'),
+                      trailing: Text(
+                          'টাকা:\n${BanglaUtility.englishToBanglaDigit(englishDigit: expense.expense_amount!.toInt())}'),
                       subtitle: Text(
-                          'তারিখ: 0${expense.day}/0${expense.month}/${expense.year}'),
+                          'তারিখ: ০${BanglaUtility.englishToBanglaDigit(englishDigit: expense.day!.toInt())}/০${BanglaUtility.englishToBanglaDigit(englishDigit: expense.month!.toInt())}/${BanglaUtility.englishToBanglaDigit(englishDigit: expense.year!.toInt())}'),
                     ),
                   ],
                 ),
@@ -138,14 +205,29 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
     );
   }
 
-  void _filterdata() {
-    if (selectedListValue == 'This Month') {
-      print(selectedListValue.toString());
-      print(_expenseprovider.expenseList[0]);
-    } else if (selectedListValue == 'This Year') {
-      print(selectedListValue.toString());
-    } else if (selectedListValue == 'Last Month') {
-      print(selectedListValue.toString());
-    }
+  void _getThisMonthValue() {
+    setState(() {
+      print('this month');
+
+      _expenseprovider.getAllExpenseByMonth();
+      print(_expenseprovider.getTotalExpenseAmount);
+    });
+  }
+
+  void _getLastMonthValue() {
+    print('last month');
+    setState(() {
+      _expenseprovider.getAllExpenseByLastMonth();
+      print(_expenseprovider.getTotalExpenseAmount);
+    });
+  }
+
+  void _getLastYearValue() {
+    setState(() {
+      print('this year');
+
+      _expenseprovider.getAllExpenseByThisYear();
+      print(_expenseprovider.getTotalExpenseAmount);
+    });
   }
 }

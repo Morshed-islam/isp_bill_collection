@@ -93,8 +93,21 @@ class DBHelper {
          .where('year',isEqualTo: DateTime.now().year)
         .snapshots();
      //DateTime(date.year, 1)
+  }
 
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchExpenseByLastMonth() {
+    return _db.collection(collectionExpense)
+        .where('month', isEqualTo: DateTime.now().month-1)
+        .where('year',isEqualTo: DateTime.now().year)
+        .snapshots();
+    //DateTime(date.year, 1)
+  }
 
+  static Stream<QuerySnapshot<Map<String, dynamic>>> fetchExpenseByThisYear() {
+    return _db.collection(collectionExpense)
+        .where('year',isEqualTo: DateTime.now().year)
+        .snapshots();
+    //DateTime(date.year, 1)
   }
 
 
