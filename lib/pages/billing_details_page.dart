@@ -1,3 +1,4 @@
+import 'package:bangla_utilities/bangla_utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,7 @@ class _BillingDetailsPageState extends State<BillingDetailsPage> {
                       ),
                       width: double.infinity,
                       child: Text(
-                        'মোট বকেয়া আছে: ${dues.total_due_bill} টাকা',
+                        'মোট বকেয়া আছে: ${BanglaUtility.englishToBanglaDigit(englishDigit: dues.total_due_bill.toInt())} টাকা',
                         key: ValueKey<num>(dues.total_due_bill),
                         style: const TextStyle(
                           fontSize: 20,

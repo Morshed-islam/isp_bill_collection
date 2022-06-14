@@ -6,6 +6,8 @@ import 'package:isp_bill_collection/pages/bill_collection_page.dart';
 import 'package:isp_bill_collection/pages/billing_details_page.dart';
 import 'package:isp_bill_collection/pages/billing_page.dart';
 import 'package:isp_bill_collection/pages/customer_details_page.dart';
+import 'package:isp_bill_collection/pages/due_details_page.dart';
+import 'package:isp_bill_collection/pages/due_page.dart';
 import 'package:isp_bill_collection/pages/expense_page.dart';
 import 'package:isp_bill_collection/pages/home_page.dart';
 import 'package:isp_bill_collection/pages/launcher_page.dart';
@@ -58,6 +60,8 @@ class MyApp extends StatelessWidget {
           ExpensePage.routeName : (context) => ExpensePage(),
           BillingPage.routeName : (context) => BillingPage(),
           BillingDetailsPage.routeName : (context) => BillingDetailsPage(),
+          DuePage.routeName : (context) => DuePage(),
+          DueDetailsPage.routeName : (context) => DueDetailsPage(),
         },
       ),
     );

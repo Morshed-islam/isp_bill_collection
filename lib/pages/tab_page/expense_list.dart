@@ -15,6 +15,9 @@ final _dropDownList = [
 class ExpenseListPage extends StatefulWidget {
   static const routeName = '/expense_list';
 
+  const ExpenseListPage({Key? key}) : super(key: key);
+
+
   @override
   State<ExpenseListPage> createState() => _ExpenseListPageState();
 }
@@ -131,45 +134,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
         ),
       ),
 
-      // AppBar(
-      //   title: Text(
-      //     'এই মাসের মোট খরচ: ${_expenseprovider.getTotalDueAmount} টাকা',
-      //     style: TextStyle(
-      //       color: Colors.red,
-      //     ),
-      //   ),
-      //   actions: [
-      //     Container(
-      //       margin: EdgeInsets.only(right: 20),
-      //       child: Padding(
-      //         padding: const EdgeInsets.only(right: 1.0),
-      //         child: Row(
-      //           crossAxisAlignment: CrossAxisAlignment.center,
-      //           mainAxisAlignment: MainAxisAlignment.start,
-      //           children: [
-      //             ElevatedButton(
-      //               child: Text('This Month'),
-      //               onPressed: _getThisMonthValue,
-      //             ),
-      //             SizedBox(width: 5,),
-      //             ElevatedButton(
-      //               child: Text('Last Month'),
-      //               onPressed: _getThisMonthValue,
-      //             ),
-      //             SizedBox(width: 5,),
-      //
-      //             ElevatedButton(
-      //               child: Text('This Year'),
-      //               onPressed: _getThisMonthValue,
-      //             ),
-      //           ],
-      //
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      //   backgroundColor: Colors.white,
-      // ),
+
       body: ListView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(horizontal: 12),

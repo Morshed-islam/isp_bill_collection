@@ -1,3 +1,4 @@
+import 'package:bangla_utilities/bangla_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:isp_bill_collection/pages/customer_details_page.dart';
 import 'package:isp_bill_collection/providers/customer_provider.dart';
@@ -41,7 +42,7 @@ class _AllCustomerState extends State<AllCustomer> {
                   const BoxShadow(color: Colors.blueGrey, spreadRadius: 5),
                 ],
               ),
-              child: Text('${_provider.getTotalCustomer}',),
+              child: Text('${BanglaUtility.englishToBanglaDigit(englishDigit: _provider.getTotalCustomer)} জন',),
             ),
           ])),
       body: ListView.builder(

@@ -1,3 +1,4 @@
+import 'package:bangla_utilities/bangla_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:isp_bill_collection/pages/billing_details_page.dart';
 import 'package:isp_bill_collection/providers/customer_provider.dart';
@@ -59,7 +60,7 @@ class _BillingPageState extends State<BillingPage> {
                       "মাসিক বিলঃ",
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                    Text('\u09F3${customer.bill}',
+                    Text('\u09F3${BanglaUtility.englishToBanglaDigit(englishDigit: customer.bill.toInt())}',
                         style: TextStyle(
                           color: Colors.orangeAccent,
                           fontWeight: FontWeight.bold,
